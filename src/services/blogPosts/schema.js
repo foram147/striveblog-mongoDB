@@ -27,7 +27,9 @@ const postSchema = new Schema(
         avatar: { type: String, required: true },
       },
     },
+    comments: [{ text: { type: String, required: true } }],
   },
+
   {
     timestamps: true,
   }
