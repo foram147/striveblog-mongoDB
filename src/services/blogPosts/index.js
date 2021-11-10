@@ -72,9 +72,13 @@ blogsRouter.delete("/:postId", async (req, res, next) => {
 blogsRouter.post("/:postId/comments", async (req, res, next) => {
   try {
     console.log(req.params.postId);
-    const newPost = new PostModel(req.body);
-    await newPost.save();
-    res.status(201).send({ _id });
+    const getpost = await PostModel.findById(req.params.postId);
+    if (getpost) {
+      const newdata = { ...req.body };
+      getpost.comments.push(newdata);
+      await getpost.save();
+      res.status(201).send(newdata);
+    }
   } catch (error) {
     next(error);
   }
