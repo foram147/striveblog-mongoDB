@@ -3,6 +3,7 @@ import listEndpoints from "express-list-endpoints";
 import mongoose from "mongoose";
 import cors from "cors";
 import blogsRouter from "./services/blogPosts/index.js";
+import authorRouter from "./services/authors/index.js";
 
 const server = express();
 const port = process.env.PORT || 3001;
@@ -11,6 +12,7 @@ server.use(cors());
 server.use(express.json());
 
 server.use("/blogposts", blogsRouter);
+server.use("/author", authorRouter);
 
 mongoose.connect(process.env.MONGO_CONNECT);
 

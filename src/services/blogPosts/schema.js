@@ -19,20 +19,24 @@ const postSchema = new Schema(
         },
       },
     },
-    author: {
-      type: Object,
-      required: true,
-      nested: {
-        name: { type: String, required: true },
-        avatar: { type: String, required: true },
-      },
-    },
-    comments: [{ text: { type: String, required: true } }],
+
+    author: [{ type: Schema.Types.ObjectId, required: true, ref: "author" }],
+    comments: [{ text: { type: String } }],
   },
 
   {
     timestamps: true,
   }
 );
+
+postSchema.static("findPostWithAuthor", async function (query) {
+  const total = await this.countDocuments(query);
+  const post = await this.find(query.criteria).populate({
+    path: "author",
+    select: "name",
+  });
+
+  return { total, post };
+});
 
 export default model("blogPosts", postSchema);

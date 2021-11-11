@@ -1,6 +1,7 @@
 import express from "express";
 import createHttpError from "http-errors";
 import PostModel from "./schema.js";
+import q2m from "query-to-mongo";
 
 const blogsRouter = express.Router();
 
@@ -16,8 +17,17 @@ blogsRouter.post("/", async (req, res, next) => {
 
 blogsRouter.get("/", async (req, res, next) => {
   try {
-    const posts = await PostModel.find();
-    res.send(posts);
+    const mongoQuery = q2m(req.query);
+    console.log(mongoQuery);
+    const { total, post } = await PostModel.findPostWithAuthor(mongoQuery);
+    res.send({
+      links: mongoQuery.links("/posts", total),
+      pageTotal: Math.ceil(total / mongoQuery.options.limit),
+      total,
+      post,
+    });
+    // const posts = await PostModel.find();
+    //res.send(posts);
   } catch (error) {
     next(error);
   }
