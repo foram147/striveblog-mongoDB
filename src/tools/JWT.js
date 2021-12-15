@@ -2,6 +2,7 @@ import createHttpError from "http-errors";
 import JWT from "jsonwebtoken";
 import userModel from "../users/userModel.js";
 
+console.log(process.env.encryptionKey);
 const generateAccesstoken = (payload) =>
   new Promise((resolve, reject) =>
     JWT.sign(

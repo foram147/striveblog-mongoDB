@@ -17,7 +17,8 @@ usersRouter.post("/register", async (req, res, next) => {
 
 usersRouter.post("/login", async (req, res, next) => {
   try {
-    const user = await userSchema(req.body);
+    const { email, password } = req.body;
+    const user = await userSchema.checkCredentials(email, password);
     if (user) {
       const { accessToken, refereshToken } = await generateToken(user);
       res.send({ accessToken, refereshToken });
