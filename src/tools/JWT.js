@@ -1,5 +1,6 @@
 import createHttpError from "http-errors";
 import JWT from "jsonwebtoken";
+import authorsRouter from "../services/authors/index.js";
 import userModel from "../users/userModel.js";
 
 console.log(process.env.encryptionKey);
@@ -15,6 +16,10 @@ const generateAccesstoken = (payload) =>
       }
     )
   );
+export const tokenAuthenticate = async (user) => {
+  const newToken = await generateAccesstoken({ _id: author._id });
+  return newToken;
+};
 
 const generateRefreshToken = (payload) =>
   new Promise((resolve, reject) =>

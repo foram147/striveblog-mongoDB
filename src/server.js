@@ -5,8 +5,10 @@ import cors from "cors";
 import blogsRouter from "./services/blogPosts/index.js";
 import authorRouter from "./services/authors/index.js";
 import usersRouter from "./users/index.js";
-//import {badRequest, notFound,serverError}
+import passport from "passport";
+import GoogleStrategy from "./services/authorization/oauth.js";
 
+passport.use("google", GoogleStrategy);
 const server = express();
 const port = process.env.PORT || 3001;
 
