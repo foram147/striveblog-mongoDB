@@ -9,11 +9,12 @@ import passport from "passport";
 import GoogleStrategy from "./services/authorization/oauth.js";
 
 passport.use("google", GoogleStrategy);
-const server = express();
 const port = process.env.PORT || 3001;
 
+const server = express();
 server.use(cors());
 server.use(express.json());
+server.use(passport.initialize());
 
 server.use("/blogposts", blogsRouter);
 server.use("/author", authorRouter);
